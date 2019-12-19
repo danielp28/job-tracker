@@ -1,38 +1,29 @@
 import React, {Component} from 'react';
 import './App.css';
-import Main from "./pages/Home";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Home from "./pages/Home";
 import Secret from "./pages/Secret"
-import NotFound from "./pages/NoMatch"
+import NoMatch from "./pages/NoMatch"
 import Callback from "./pages/Callback"
+import Navbar from "./components/navbar/nav"
 
-
-class App extends Component {
-  render() {
-    let mainComponent = ""
-    switch(this.props.location){
-      case "":
-          mainComponent = <Main {...this.props} />;
-          break;
-          case "callback":
-            mainComponent = <Callback />;
-            break;
-      case "secret":
-          mainComponent = this.props.auth.isAuthenticated() ? <Secret {...this.props} />: <NotFound />
-          break;
-          default :
-          mainComponent = <NotFound />;
-    }
-
-    
+function App(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-      
-       
-        {mainComponent}
-      </header>
-    </div>
+    <Router>
+      <div>
+      <Navbar {...props} />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/callback" component={Callback} />
+          <Route exact path="/secret" component={Secret} />
+          <Route component={NoMatch} />
+        </Switch>
+      </div>
+    </Router>
   );
-  }
 }
+
+
+
+
 export default App;
